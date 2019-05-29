@@ -1,22 +1,43 @@
 const express = require('express');
-// const debug = require('debug')('app:bookRoutes');
-const sql = require('mssql');
+const debug = require('debug')('app:bookRoutes');
+const { MongoClient, ObjectID } = require('mongodb');
 
 const bookRouter = express.Router();
 const route = (nav) => {
   bookRouter.route('/').get((req, res) => {
-    (async function query() {
-      const request = new sql.Request();
-      const { recordset } = await request.query('SELECT * FROM books');
-      res.render('bookListView', { title: 'Library', nav, books: recordset });
+    const url = 'mongodb://localhost:27017';
+    const dbName = 'libraryDB';
+    (async function mongo() {
+      let client;
+      try {
+        client = await MongoClient.connect(url);
+        debug('Connected correctly to server');
+        const db = client.db(dbName);
+        const coll = await db.collection('books');
+        const books = await coll.find().toArray();
+        res.render('bookListView', { title: 'Library', nav, books });
+      } catch (error) {
+        debug(error.stack);
+      }
+      client.close();
     }());
   });
   bookRouter.route('/:id').all((req, res, next) => {
     const { id } = req.params;
+    const url = 'mongodb://localhost:27017';
+    const dbName = 'libraryDB';
     (async function query() {
-      const request = new sql.Request();
-      const { recordset } = await request.query(`SELECT * FROM books WHERE id = '${id}'`);
-      [req.book] = recordset;
+      let client;
+      try {
+        client = await MongoClient.connect(url);
+        const db = client.db(dbName);
+        const coll = await db.collection('books');
+        const book = await coll.findOne({ _id: new ObjectID(id) });
+        req.book = book;
+      } catch (error) {
+        debug(error);
+      }
+      client.close();
       next();
     }());
   }).get((req, res) => {
