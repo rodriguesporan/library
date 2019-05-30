@@ -17,7 +17,7 @@ const books = [{
 ];
 const adminRouter = express.Router();
 const route = () => {
-  adminRouter.get('/', (req, res) => {
+  adminRouter.route('/').get((req, res) => {
     const url = 'mongodb://localhost:27017';
     const dbName = 'libraryDB';
     (async function mongo() {
