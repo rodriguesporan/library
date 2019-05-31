@@ -6,13 +6,13 @@ const books = [{
   title: 'A preparação do ator', genre: 'Artes cenicas', author: 'Constantin Stanislavski', read: true,
 },
 {
-  title: 'Essencialismo', genre: 'Auto ajuda', author: 'Greg McKeown', read: true,
+  title: 'Essencialismo', genre: 'Auto ajuda', author: 'Greg McKeown', read: true, bookId: 18077875,
 },
 {
   title: 'Feminismo em comum', genre: 'Feminismo', author: 'Marcia Tiburi', read: true,
 },
 {
-  title: 'Como vejo o mundo', genre: 'Filosofia', author: 'Albert Einstein', read: false,
+  title: 'Como vejo o mundo', genre: 'Filosofia', author: 'Albert Einstein', read: false, bookId: 231610,
 },
 ];
 const adminRouter = express.Router();
