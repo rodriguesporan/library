@@ -1,8 +1,8 @@
 const debug = require('debug')('app:bookController');
 const { MongoClient, ObjectID } = require('mongodb');
 
-function bookController(bookService, nav) {
-  function getIndex(req, res) {
+const bookController = (bookService, nav) => ({
+  getIndex: (req, res) => {
     const url = 'mongodb://localhost:27017';
     const dbName = 'libraryDB';
     (async function mongo() {
@@ -19,8 +19,8 @@ function bookController(bookService, nav) {
       }
       client.close();
     }());
-  }
-  function getById(req, res) {
+  },
+  getById: (req, res) => {
     const { id } = req.params;
     const url = 'mongodb://localhost:27017';
     const dbName = 'libraryDB';
@@ -38,18 +38,13 @@ function bookController(bookService, nav) {
       }
       client.close();
     }());
-  }
-  function middleware(req, res, next) {
-    // if (req.user) {
+  },
+  middleware: (req, res, next) => {
+    if (req.user) {
       next();
-    // } else {
-    //   res.redirect('/');
-    // }
-  }
-  return {
-    getIndex,
-    getById,
-    middleware,
-  };
-}
+    } else {
+      res.redirect('/');
+    }
+  },
+});
 module.exports = bookController;
