@@ -20,7 +20,7 @@
     "ejs": "2.6.1",
     "express": "4.16.4",
     "express-session": "1.16.1",
-    "jquery": "3.4.1",
+    "jquery": "3.5.0",
     "mongodb": "3.2.6",
     "morgan": "1.9.1",
     "nodemon": "1.19.0",
